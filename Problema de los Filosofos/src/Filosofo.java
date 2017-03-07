@@ -73,6 +73,9 @@ public class Filosofo implements Runnable, Constant {
         if (timer >= timerMax) {
             timer = 0;
             timerMax = random.nextInt(5) + 1;
+            this.hasTenedor = false
+            mesa.returnTenedor(tenedorD)
+            mesa.returnTenedor(tenedorI)
             estado = PENSANDO;
         }
     }
