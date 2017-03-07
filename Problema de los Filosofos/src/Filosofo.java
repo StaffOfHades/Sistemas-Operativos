@@ -11,6 +11,9 @@ public class Filosofo implements Runnable {
     private int timer;
     private int timerMax;
     private Random random;
+    private int tenedorD;
+    private bool hasTenedor;
+    private int tenedorD;
 
     public Filosofo(int id) {
         this.id = id;
@@ -18,6 +21,16 @@ public class Filosofo implements Runnable {
         this.random = new Random( System.currentTimeMillis() );
         this.timerMax = random.nextInt(5) + 1;
         this.estado = PENSANDO;
+        this.hasTenedor = false;
+        
+        if id == 0 {
+ +            this.tenedorD = SIZE-1;
+ +            this.tenedorI = id;
+ +      } else {
+ +            this.tenedorD = id-1;
+ +            this.tenedorI = id;
+ +      }
+        
     } 
 
     public synchronized void pensar() {
@@ -33,8 +46,18 @@ public class Filosofo implements Runnable {
 
     public synchronized void esperar() {
         // Checar los tendores
-        System.out.println("Filosofo " + id + " agarro los tenedores");
-        estado = COMIENDO;
+        if !this.hasTenedor {
+            if mesa.getTenedor(this.tenedorD) {
+                this.hasTenedor = true;
+                if mesa.getTenedor(this.tenedorI){
+                    estado = COMIENDO;
+                    System.out.println("Filosofo " + id + " agarro los tenedores");
+                }
+            }
+        }else if mesa.getTenedor(this.tenedorI) {
+                estado = COMIENDO;
+             System.out.println("Filosofo " + id + " agarro los tenedores");
+        }
     }
 
     public synchronized void comer() {
