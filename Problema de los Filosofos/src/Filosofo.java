@@ -2,9 +2,9 @@ import java.util.Random;
 
 public class Filosofo implements Runnable, Constant {
     
-    private static final int PENSANDO = 1;
-    private static final int COMIENDO = 2;
-    private static final int ESPERANDO = 3;
+    public static final int PENSANDO = 1;
+    public static final int COMIENDO = 2;
+    public static final int ESPERANDO = 3;
 
     private int estado;
     private int id;
@@ -15,7 +15,6 @@ public class Filosofo implements Runnable, Constant {
     private boolean hasTenedor;
     private int tenedorI;
     private Mesa mesa;
-
 
     public Filosofo(int id) {
         this.id = id;
@@ -50,16 +49,16 @@ public class Filosofo implements Runnable, Constant {
     public synchronized void esperar() {
         // Checar los tendores
         if (!this.hasTenedor) {
-            if ( mesa.getTenedor(this.tenedorD) ) {
+            if ( mesa.getTenedor(this.tenedorD, this.id) ) {
                 this.hasTenedor = true;
-                if ( mesa.getTenedor(this.tenedorI )) {
+                if ( mesa.getTenedor(this.tenedorI, this.id)) {
                     estado = COMIENDO;
                     System.out.println("Filosofo " + id + " agarro los tenedores");
                 } else {
                     System.out.println("Filosofo " + id + " no encontro un tenedor");
                 }
             }
-        } else if ( mesa.getTenedor(this.tenedorI) ) {
+        } else if ( mesa.getTenedor(this.tenedorI, this.id) ) {
              estado = COMIENDO;
              System.out.println("Filosofo " + id + " agarro los tenedores");
         } else {
@@ -83,6 +82,7 @@ public class Filosofo implements Runnable, Constant {
     @Override
     public void run() {
         //System.out.println("Filosofo " + id + " corre");
+        mesa.setEstadoFilosofo(this.id, this.estado);
 
         switch (estado) {
             case PENSANDO:

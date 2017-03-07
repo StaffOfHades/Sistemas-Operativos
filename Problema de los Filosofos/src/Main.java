@@ -6,20 +6,17 @@ import javax.swing.*;
 
 public class Main implements Constant {
 
-    private static Filosofo[] filosofos;
-
     public static void main(String[] args) {
-        //crearFilosofos();
+        crearFilosofos();
         crearGui();
     }
 
     private static void crearFilosofos() {
         Mesa mesa = Mesa.getInstance();
-        filosofos = new Filosofo[SIZE];
         for (int i = 0; i < SIZE; i++) {
-            filosofos[i]  = new Filosofo(i);
+            Filosofo f  = new Filosofo(i);
             ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-            exec.scheduleAtFixedRate(filosofos[i], 0, DELAY, TimeUnit.MILLISECONDS);
+            exec.scheduleAtFixedRate(f, 0, DELAY, UNIT);
         }
     }
 
@@ -27,10 +24,18 @@ public class Main implements Constant {
         JFrame frame = new JFrame("Problema de los Filosofos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setBounds(100, 100, 450, 300);
+        final View view = new View();
 
-        frame.getContentPane().add(new View());
+        frame.getContentPane().add(view);
         frame.pack();
         frame.setVisible(true);
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                view.repaint();
+            }
+        }, 0, DELAY, UNIT);
 
     }
 
