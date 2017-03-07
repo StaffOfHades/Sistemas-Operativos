@@ -2,6 +2,6 @@
 public interface Constant {
 
     int SIZE = 5;
-    int DELAY = 3;
+    int DELAY = 1;
     
 }

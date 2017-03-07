@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Filosofo implements Runnable {
+public class Filosofo implements Runnable, Constant {
     
     private static final int PENSANDO = 1;
     private static final int COMIENDO = 2;
@@ -12,8 +12,10 @@ public class Filosofo implements Runnable {
     private int timerMax;
     private Random random;
     private int tenedorD;
-    private bool hasTenedor;
-    private int tenedorD;
+    private boolean hasTenedor;
+    private int tenedorI;
+    private Mesa mesa;
+
 
     public Filosofo(int id) {
         this.id = id;
@@ -22,14 +24,15 @@ public class Filosofo implements Runnable {
         this.timerMax = random.nextInt(5) + 1;
         this.estado = PENSANDO;
         this.hasTenedor = false;
-        
-        if id == 0 {
- +            this.tenedorD = SIZE-1;
- +            this.tenedorI = id;
- +      } else {
- +            this.tenedorD = id-1;
- +            this.tenedorI = id;
- +      }
+        this.mesa = Mesa.getInstance();        
+
+        if (id == 0) {
+              this.tenedorD = SIZE - 1;
+              this.tenedorI = id;
+        } else {
+              this.tenedorD = id - 1;
+              this.tenedorI = id;
+        }
         
     } 
 
@@ -46,17 +49,21 @@ public class Filosofo implements Runnable {
 
     public synchronized void esperar() {
         // Checar los tendores
-        if !this.hasTenedor {
-            if mesa.getTenedor(this.tenedorD) {
+        if (!this.hasTenedor) {
+            if ( mesa.getTenedor(this.tenedorD) ) {
                 this.hasTenedor = true;
-                if mesa.getTenedor(this.tenedorI){
+                if ( mesa.getTenedor(this.tenedorI )) {
                     estado = COMIENDO;
                     System.out.println("Filosofo " + id + " agarro los tenedores");
+                } else {
+                    System.out.println("Filosofo " + id + " no encontro un tenedor");
                 }
             }
-        }else if mesa.getTenedor(this.tenedorI) {
-                estado = COMIENDO;
+        } else if ( mesa.getTenedor(this.tenedorI) ) {
+             estado = COMIENDO;
              System.out.println("Filosofo " + id + " agarro los tenedores");
+        } else {
+            System.out.println("Filosofo " + id + " solo tiene un tenedor");
         }
     }
 
