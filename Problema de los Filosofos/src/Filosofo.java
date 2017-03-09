@@ -20,7 +20,7 @@ public class Filosofo implements Runnable, Constant {
         this.id = id;
         this.timer = 0;
         this.random = new Random( System.currentTimeMillis() );
-        this.timerMax = random.nextInt(5) + 1;
+        this.timerMax = random.nextInt(MAX_TIMER) + 1;
         this.estado = PENSANDO;
         this.hasTenedor = false;
         this.mesa = Mesa.getInstance();        
@@ -40,7 +40,7 @@ public class Filosofo implements Runnable, Constant {
         timer++;
         if (timer >= timerMax) {
             timer = 0;
-            timerMax = random.nextInt(5) + 1;
+            timerMax = random.nextInt(MAX_TIMER) + 1;
             estado = ESPERANDO;
         }
 
@@ -71,7 +71,7 @@ public class Filosofo implements Runnable, Constant {
         timer++;
         if (timer >= timerMax) {
             timer = 0;
-            timerMax = random.nextInt(5) + 1;
+            timerMax = random.nextInt(MAX_TIMER) + 1;
             this.hasTenedor = false;
             mesa.returnTenedor(tenedorD);
             mesa.returnTenedor(tenedorI);
