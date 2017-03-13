@@ -1,11 +1,22 @@
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 import javax.swing.*;
 
 public class View extends JPanel implements Constant {
 
     private Color[] colors;
     private Circle[] circles;
+    private BufferedImage[] images;
+    private BufferedImage laMesa;
+    private int[] position;
     private Line[] lines;
+
+    private BufferedImage WAITING;
+    private BufferedImage EATING;
+    private BufferedImage THINKING;
 
     private static final Color ESPERANDO = new Color(137, 162, 54);
     private static final Color PENSANDO = new Color(66, 48, 117);
@@ -31,6 +42,27 @@ public class View extends JPanel implements Constant {
         circles[2] = new Circle(440, 430, 100, 5, ESPERANDO);
         circles[3] = new Circle(160, 430, 100, 5, ESPERANDO);
         circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);
+
+      /*  position[0] = 300,100;
+        position[1] = 480,230;
+        position[2] = 440, 430;
+        position[3] = 160,430;
+        position[4] = 120,230;
+        */
+
+        try {
+            laMesa = ImageIO.read(new File("assets/mesa.png"));
+            WAITING = ImageIO.read(new File("assets/waiting.png"));
+            EATING = ImageIO.read(new File("assets/eating.png"));
+            THINKING = ImageIO.read(new File("assets/thinking.png"));
+
+        } catch (IOException e) {}
+
+        images[0] = WAITING;
+        images[1] = WAITING;
+        images[2] = WAITING;
+        images[3] = WAITING;
+        images[4] = WAITING;
 
         lines[4] = new Line(200, 230, 150, 180, 3, LIBRE);
         lines[0] = new Line(370, 400, 180, 150, 3, LIBRE);
@@ -61,9 +93,9 @@ public class View extends JPanel implements Constant {
                 t = 0;
             }
             if (n != null) {
-                lines[i].color = colors[n];
+                lines[i].color = colors[n]; //set fork to filosofo
             } else {
-                lines[i].color = LIBRE;
+                lines[i].color = LIBRE;     //set fork to free
             }
         }
          
@@ -71,14 +103,17 @@ public class View extends JPanel implements Constant {
             n = mesa.getEstadoFilosofo(i);
             switch (n) {
                 case Filosofo.PENSANDO:
-                    circles[i].outline = PENSANDO;
+                    circles[i].outline = PENSANDO; // set filosofos
+                    //images[i] = THINKING;
                     break;
                 case Filosofo.COMIENDO:
                     circles[i].outline = COMIENDO;
+                    //images[i] = EATING;
                     break;
                 case Filosofo.ESPERANDO:
                 default:
                     circles[i].outline = ESPERANDO;
+                    //images[i] = WAITING;
                     break;
                 }
         }
@@ -86,19 +121,22 @@ public class View extends JPanel implements Constant {
     }
 
     private void drawMesa(Graphics g) {
-        g.setColor(Color.GRAY);
+       /* g.setColor(Color.GRAY);
         fillCenteredCircle(g, 300, 300, 400);
         g.setColor(Color.BLACK);
         drawCenteredCircle(g, 300, 300, 400, 2);
+        */
+        g.drawImage(laMesa, 0, 0, null);
     }
 
     private void drawFilosofos(Graphics g) {
         for (int i = 0; i < SIZE; i++) {
-            Circle c = circles[i];
+            Circle c = circles[i]; //change to draw image
             g.setColor(colors[i]);
             fillCenteredCircle(g, c.x, c.y, c.r);
             g.setColor(c.outline);
             drawCenteredCircle(g, c.x, c.y, c.r, c.t);
+
         }
     }
 

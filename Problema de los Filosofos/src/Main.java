@@ -23,7 +23,7 @@ public class Main implements Constant {
     private static void crearGui() {
         JFrame frame = new JFrame("Problema de los Filosofos");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setBounds(100, 100, 450, 300);
+        //frame.setBounds(100, 100, 450, 300);
         final View view = new View();
 
         frame.getContentPane().add(view);
