@@ -23,6 +23,8 @@ public class View extends JPanel implements Constant {
     private static final Color COMIENDO = new Color(128, 72, 21);
     private static final Color LIBRE = new Color(33, 85, 11);
 
+    private static final String PATH = "/Users/mauriciog/Documents/Sistemas Operativos/Problema de los Filosofos/"; 
+
     public View() {
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(600, 600));
@@ -43,20 +45,18 @@ public class View extends JPanel implements Constant {
         circles[3] = new Circle(160, 430, 100, 5, ESPERANDO);
         circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);
 
-      /*  position[0] = 300,100;
-        position[1] = 480,230;
-        position[2] = 440, 430;
-        position[3] = 160,430;
-        position[4] = 120,230;
-        */
-
         try {
-            laMesa = ImageIO.read(new File("assets/mesa.png"));
-            WAITING = ImageIO.read(new File("assets/waiting.png"));
-            EATING = ImageIO.read(new File("assets/eating.png"));
-            THINKING = ImageIO.read(new File("assets/thinking.png"));
+            laMesa = ImageIO.read(new File(PATH + "assets/mesa.png"));
+            WAITING = ImageIO.read(new File(PATH + "assets/waiting.png"));
+            EATING = ImageIO.read(new File(PATH + "assets/eating.png"));
+            THINKING = ImageIO.read(new File(PATH + "assets/thinking.png"));
 
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        images = new BufferedImage[5];
 
         images[0] = WAITING;
         images[1] = WAITING;
@@ -126,7 +126,7 @@ public class View extends JPanel implements Constant {
         g.setColor(Color.BLACK);
         drawCenteredCircle(g, 300, 300, 400, 2);
         */
-        g.drawImage(laMesa, 0, 0, null);
+        g.drawImage(laMesa, 100, 100, 400, 400, null);
     }
 
     private void drawFilosofos(Graphics g) {
