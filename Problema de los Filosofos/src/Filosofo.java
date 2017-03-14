@@ -23,16 +23,9 @@ public class Filosofo implements Runnable, Constant {
         this.timerMax = random.nextInt(MAX_TIMER) + 1;
         this.estado = PENSANDO;
         this.hasTenedor = false;
-        this.mesa = Mesa.getInstance();        
-
-        if (id == 0) {
-              this.tenedorD = SIZE - 1;
-              this.tenedorI = id;
-        } else {
-              this.tenedorD = id - 1;
-              this.tenedorI = id;
-        }
-        
+        this.mesa = Mesa.getInstance();
+        this.tenedorD = (id - 1) % SIZE;
+        this.tenedorI = id;
     } 
 
     public synchronized void pensar() {

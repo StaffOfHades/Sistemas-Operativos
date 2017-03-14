@@ -88,10 +88,8 @@ public class View extends JPanel implements Constant {
 
         for (int i = 0; i < SIZE; i++) {
             n = mesa.getOcupador(i);
-            t = i + 1;
-            if (t >= SIZE) {
-                t = 0;
-            }
+            t = (i + 1) % SIZE;
+            
             if (n != null) {
                 lines[i].color = colors[n]; //set fork to filosofo
             } else {
@@ -104,16 +102,16 @@ public class View extends JPanel implements Constant {
             switch (n) {
                 case Filosofo.PENSANDO:
                     circles[i].outline = PENSANDO; // set filosofos
-                    //images[i] = THINKING;
+                    images[i] = THINKING;
                     break;
                 case Filosofo.COMIENDO:
                     circles[i].outline = COMIENDO;
-                    //images[i] = EATING;
+                    images[i] = EATING;
                     break;
                 case Filosofo.ESPERANDO:
                 default:
                     circles[i].outline = ESPERANDO;
-                    //images[i] = WAITING;
+                    images[i] = WAITING;
                     break;
                 }
         }
@@ -130,14 +128,21 @@ public class View extends JPanel implements Constant {
     }
 
     private void drawFilosofos(Graphics g) {
-        for (int i = 0; i < SIZE; i++) {
+        /*
+       for (int i = 0; i < SIZE; i++) {
             Circle c = circles[i]; //change to draw image
             g.setColor(colors[i]);
             fillCenteredCircle(g, c.x, c.y, c.r);
             g.setColor(c.outline);
             drawCenteredCircle(g, c.x, c.y, c.r, c.t);
-
+        } 
+        */
+        for (int i = 0; i < SIZE; i++) {
+            BufferedImage image = images[i]; //change to draw image
+            Circle c = circles[i];
+            g.drawImage(image, c.x - (c.r / 2), c.y - (c.r / 2), c.r, c.r, null);
         }
+
     }
 
     private void drawTenedores(Graphics g) {
