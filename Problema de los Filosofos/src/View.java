@@ -8,10 +8,11 @@ import javax.swing.*;
 public class View extends JPanel implements Constant {
 
     private Color[] colors;
-    private Circle[] circles;
+    /*private Circle[] circles;*/
     private BufferedImage[] images;
     private BufferedImage laMesa;
-    private int[] position;
+    private int[] xPosition;
+    private int[] yPosition;
     private Line[] lines;
 
     private BufferedImage WAITING;
@@ -23,14 +24,14 @@ public class View extends JPanel implements Constant {
     private static final Color COMIENDO = new Color(128, 72, 21);
     private static final Color LIBRE = new Color(33, 85, 11);
 
-    private static final String PATH = "/Users/mauriciog/Documents/Sistemas Operativos/Problema de los Filosofos/"; 
+    private static final String PATH = (System.getProperty("user.dir"));
 
     public View() {
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(600, 600));
         
         colors = new Color[SIZE];
-        circles = new Circle[SIZE];
+        /*circles = new Circle[SIZE];*/
         lines = new Line[SIZE];
 
         colors[0] = Color.PINK;
@@ -39,17 +40,34 @@ public class View extends JPanel implements Constant {
         colors[3] = Color.MAGENTA;
         colors[4] = Color.CYAN;
 
-        circles[0] = new Circle(300, 100, 100, 5, ESPERANDO);
+        /*circles[0] = new Circle(300, 100, 100, 5, ESPERANDO);
         circles[1] = new Circle(480, 230, 100, 5, ESPERANDO);
         circles[2] = new Circle(440, 430, 100, 5, ESPERANDO);
         circles[3] = new Circle(160, 430, 100, 5, ESPERANDO);
-        circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);
+        circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);*/
+
+        xPosition = new int[SIZE];
+        yPosition = new int [SIZE];
+
+        xPosition[0] = 300;
+        yPosition[0] = 100;
+        xPosition[1] = 520;
+        yPosition[1] = 200;
+        xPosition[2] = 450;
+        yPosition[2] = 470;
+        xPosition[3] = 170;
+        yPosition[3] = 470;
+        xPosition[4] = 100; 
+        yPosition[4] = 200;
+        
+
+        System.out.println(PATH);
 
         try {
-            laMesa = ImageIO.read(new File(PATH + "assets/mesa.png"));
-            WAITING = ImageIO.read(new File(PATH + "assets/waiting.png"));
-            EATING = ImageIO.read(new File(PATH + "assets/eating.png"));
-            THINKING = ImageIO.read(new File(PATH + "assets/thinking.png"));
+            laMesa = ImageIO.read(new File(PATH + "/assets/mesa.png"));
+            WAITING = ImageIO.read(new File(PATH + "/assets/waiting.png"));
+            EATING = ImageIO.read(new File(PATH + "/assets/eating.png"));
+            THINKING = ImageIO.read(new File(PATH + "/assets/thinking.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,11 +82,11 @@ public class View extends JPanel implements Constant {
         images[3] = WAITING;
         images[4] = WAITING;
 
-        lines[4] = new Line(200, 230, 150, 180, 3, LIBRE);
-        lines[0] = new Line(370, 400, 180, 150, 3, LIBRE);
-        lines[1] = new Line(430, 470, 320, 340, 3, LIBRE);
-        lines[3] = new Line(130, 170, 340, 320, 3, LIBRE);
-        lines[2] = new Line(300, 300, 470, 420, 3, LIBRE);
+        lines[4] = new Line(220, 243, 190, 222, 5, LIBRE);
+        lines[0] = new Line(354, 379, 220, 185, 5, LIBRE);
+        lines[1] = new Line(390, 430, 327, 340, 5, LIBRE);
+        lines[3] = new Line(167, 207, 342, 328, 5, LIBRE);
+        lines[2] = new Line(300, 300, 395, 435, 5, LIBRE);
 
     }
 
@@ -103,17 +121,17 @@ public class View extends JPanel implements Constant {
             n = mesa.getEstadoFilosofo(i);
             switch (n) {
                 case Filosofo.PENSANDO:
-                    circles[i].outline = PENSANDO; // set filosofos
-                    //images[i] = THINKING;
+                    // circles[i].outline = PENSANDO; // set filosofos
+                    images[i] = THINKING;
                     break;
                 case Filosofo.COMIENDO:
-                    circles[i].outline = COMIENDO;
-                    //images[i] = EATING;
+                    // circles[i].outline = COMIENDO;
+                    images[i] = EATING;
                     break;
                 case Filosofo.ESPERANDO:
                 default:
-                    circles[i].outline = ESPERANDO;
-                    //images[i] = WAITING;
+                    //circles[i].outline = ESPERANDO;
+                    images[i] = WAITING;
                     break;
                 }
         }
@@ -131,11 +149,15 @@ public class View extends JPanel implements Constant {
 
     private void drawFilosofos(Graphics g) {
         for (int i = 0; i < SIZE; i++) {
-            Circle c = circles[i]; //change to draw image
+            /*Circle c = circles[i]; //change to draw image
             g.setColor(colors[i]);
             fillCenteredCircle(g, c.x, c.y, c.r);
             g.setColor(c.outline);
-            drawCenteredCircle(g, c.x, c.y, c.r, c.t);
+            drawCenteredCircle(g, c.x, c.y, c.r, c.t);*/
+
+            
+            g.drawImage(images[i], xPosition[i] - 50, yPosition[i] - 50, 100, 100, null);
+            
 
         }
     }
@@ -148,10 +170,10 @@ public class View extends JPanel implements Constant {
         }
     }
 
-    private void fillCenteredCircle(Graphics g, int x, int y, int r) { 
+    /*private void fillCenteredCircle(Graphics g, int x, int y, int r) { 
         x = x - ( r / 2 );
         y = y - ( r / 2 );
-        g.fillOval( x, y, r, r );
+        g.fillOv\al( x, y, r, r );
     }
     
     private void drawCenteredCircle(Graphics g, int x, int y, int r, int t) {
@@ -159,14 +181,14 @@ public class View extends JPanel implements Constant {
          x = x - ( r / 2 );
         y = y - ( r / 2 );
         g.drawOval( x, y, r, r );
-    }
+    }*/
 
     private void drawLine(Graphics g, int x, int y, int w, int h, int t) {
         ( (Graphics2D) g).setStroke( new BasicStroke( t ) );
         g.drawLine( x, y, w, h );
     }
 
-    private class Circle {
+    /*private class Circle {
         int x;
         int y;
         int r;
@@ -180,7 +202,7 @@ public class View extends JPanel implements Constant {
             this.outline = outline;
             this.t = t;
         }  
-    }
+    }*/
 
     private class Line {
         int x1; 
