@@ -8,11 +8,10 @@ import javax.swing.*;
 public class View extends JPanel implements Constant {
 
     private Color[] colors;
-    /*private Circle[] circles;*/
+    private Circle[] circles;
     private BufferedImage[] images;
     private BufferedImage laMesa;
-    private int[] xPosition;
-    private int[] yPosition;
+    private int[] position;
     private Line[] lines;
 
     private BufferedImage WAITING;
@@ -24,12 +23,14 @@ public class View extends JPanel implements Constant {
     private static final Color COMIENDO = new Color(128, 72, 21);
     private static final Color LIBRE = new Color(33, 85, 11);
 
+    private static final String PATH = "/Users/mauriciog/Documents/Sistemas Operativos/Problema de los Filosofos/"; 
+
     public View() {
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(600, 600));
         
         colors = new Color[SIZE];
-        /*circles = new Circle[SIZE];*/
+        circles = new Circle[SIZE];
         lines = new Line[SIZE];
 
         colors[0] = Color.PINK;
@@ -38,32 +39,24 @@ public class View extends JPanel implements Constant {
         colors[3] = Color.MAGENTA;
         colors[4] = Color.CYAN;
 
-        /*circles[0] = new Circle(300, 100, 100, 5, ESPERANDO);
+        circles[0] = new Circle(300, 100, 100, 5, ESPERANDO);
         circles[1] = new Circle(480, 230, 100, 5, ESPERANDO);
         circles[2] = new Circle(440, 430, 100, 5, ESPERANDO);
         circles[3] = new Circle(160, 430, 100, 5, ESPERANDO);
-        circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);*/
-
-      /*  
-        xPosition[0] = 300;
-        yPosition[0] = 100;
-        xPosition[1] = 480;
-        yPosition[1] = 230;
-        xPosition[2] = 440;
-        yPosition[2] = 430;
-        xPosition[3] = 160;
-        yPosition[3] = 430;
-        xPosition[4] = 120; 
-        yPosition[4] = 230;
-        */
+        circles[4] = new Circle(120, 230, 100, 2, ESPERANDO);
 
         try {
-            laMesa = ImageIO.read(new File("assets/mesa.png"));
-            WAITING = ImageIO.read(new File("assets/waiting.png"));
-            EATING = ImageIO.read(new File("assets/eating.png"));
-            THINKING = ImageIO.read(new File("assets/thinking.png"));
+            laMesa = ImageIO.read(new File(PATH + "assets/mesa.png"));
+            WAITING = ImageIO.read(new File(PATH + "assets/waiting.png"));
+            EATING = ImageIO.read(new File(PATH + "assets/eating.png"));
+            THINKING = ImageIO.read(new File(PATH + "assets/thinking.png"));
 
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        images = new BufferedImage[5];
 
         images[0] = WAITING;
         images[1] = WAITING;
@@ -110,16 +103,16 @@ public class View extends JPanel implements Constant {
             n = mesa.getEstadoFilosofo(i);
             switch (n) {
                 case Filosofo.PENSANDO:
-                   // circles[i].outline = PENSANDO; // set filosofos
+                    circles[i].outline = PENSANDO; // set filosofos
                     //images[i] = THINKING;
                     break;
                 case Filosofo.COMIENDO:
-                   // circles[i].outline = COMIENDO;
+                    circles[i].outline = COMIENDO;
                     //images[i] = EATING;
                     break;
                 case Filosofo.ESPERANDO:
                 default:
-                    //circles[i].outline = ESPERANDO;
+                    circles[i].outline = ESPERANDO;
                     //images[i] = WAITING;
                     break;
                 }
@@ -133,20 +126,16 @@ public class View extends JPanel implements Constant {
         g.setColor(Color.BLACK);
         drawCenteredCircle(g, 300, 300, 400, 2);
         */
-        g.drawImage(laMesa, 0, 0, null);
+        g.drawImage(laMesa, 100, 100, 400, 400, null);
     }
 
     private void drawFilosofos(Graphics g) {
         for (int i = 0; i < SIZE; i++) {
-            /*Circle c = circles[i]; //change to draw image
+            Circle c = circles[i]; //change to draw image
             g.setColor(colors[i]);
             fillCenteredCircle(g, c.x, c.y, c.r);
             g.setColor(c.outline);
-            drawCenteredCircle(g, c.x, c.y, c.r, c.t);*/
-
-            /*
-            g.drawImage(images[i], xPosition[i], yPosition[i], null);
-            */
+            drawCenteredCircle(g, c.x, c.y, c.r, c.t);
 
         }
     }
@@ -159,7 +148,7 @@ public class View extends JPanel implements Constant {
         }
     }
 
-    /*private void fillCenteredCircle(Graphics g, int x, int y, int r) { 
+    private void fillCenteredCircle(Graphics g, int x, int y, int r) { 
         x = x - ( r / 2 );
         y = y - ( r / 2 );
         g.fillOval( x, y, r, r );
@@ -170,14 +159,14 @@ public class View extends JPanel implements Constant {
          x = x - ( r / 2 );
         y = y - ( r / 2 );
         g.drawOval( x, y, r, r );
-    }*/
+    }
 
     private void drawLine(Graphics g, int x, int y, int w, int h, int t) {
         ( (Graphics2D) g).setStroke( new BasicStroke( t ) );
         g.drawLine( x, y, w, h );
     }
 
-    /*private class Circle {
+    private class Circle {
         int x;
         int y;
         int r;
@@ -191,7 +180,7 @@ public class View extends JPanel implements Constant {
             this.outline = outline;
             this.t = t;
         }  
-    }*/
+    }
 
     private class Line {
         int x1; 
